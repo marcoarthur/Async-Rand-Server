@@ -1,67 +1,64 @@
 package Async::Rand::Server;
 
-use strict;
+use Moose;
 use 5.014;
 use experimental qw(signatures);
-use Moose;
 use autodie qw(:all);
-use Data::Dumper;
+use Async::Rand::Library -all;
 with qw( Async::Role::Loopable Async::Role::Logging );
 
 our $VERSION = '0.01';
 use constant {
-    DEFAULT_PORT => 3500,
-    LOG_LEVEL    => 'DEBUG'
+    DEFAULT_PORT    => 3500,
+    LOG_LEVEL       => 'DEBUG',
+    DEFAULT_ADDRESS => '127.0.0.1',
 };
 
 has port => (
     is       => 'ro',
-    isa      => 'Int',
+    isa      => Port,
     required => 1,
     default  => DEFAULT_PORT,
 );
 
+has address => (
+    is       => 'ro',
+    isa      => IP,
+    required => 1,
+    default  => DEFAULT_ADDRESS,
+);
+
+# create the server
 sub BUILD {
     my $self = shift;
 
     $self->info("Creating a server, pid: $$");
-    my $server = {
-        type => 'server',
-        args => {
-            {
-				port => $self->port,
-				address => '127.0.0.1',
-			} => sub {
-                my ( $loop, $stream, $id ) = @_;
 
-				# Define a handler for the stream
-                my $handler = sub {
-                    my ( $stream, $bytes ) = @_;
-                    say "I saw $bytes bytes";
-                    $stream->write("Hello There! I read $bytes bytes\n");
-                };
+    $self->loop->server(
+        {
+            port    => $self->port,
+            address => $self->address,
+        } => sub {
+            my ( $loop, $stream, $id ) = @_;
 
-                $stream->on( read => $handler );
-            }
+            $stream->on( read => \&_reader_handler );
+			$stream->on( finish => \&_finish_handler );
         }
-    };
+    );
 
-    $self->add($server);
-    $self->info( "Listing on port " . $self->port );
+	$self->info("Listening on port:" . $self->port);
+}
 
-	my $timer = {
-		type => 'recurring',
-		args => {
-			1 => sub {
-				state $c = 0;
-				$self->warn('Timer event ' . $c);
-				$c++;
-			}
-		}
-	};
+# TODO:  protocol to talk client
+sub _reader_handler {
+    my ( $stream, $bytes ) = @_;
+    say "I saw $bytes bytes";
+    $stream->write("Hello There! I read $bytes bytes\n");
+}
 
-	$self->info("Add a timer");
-	$self->add($timer);
+# TODO: protocol to finish/close client
+sub _finish_handler {
+	...
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -74,7 +71,7 @@ __END__
 
 =head1 NAME
 
-Async::Rand::Server - Blah blah blah
+Async::Rand::Server - This simple get you back a random number
 
 =head1 SYNOPSIS
 
@@ -82,7 +79,7 @@ Async::Rand::Server - Blah blah blah
 
 =head1 DESCRIPTION
 
-Async::Rand::Server is
+Async::Rand::Server is just for the fun of creating a stupid non blocking server
 
 =head1 AUTHOR
 

@@ -47,6 +47,17 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/marcoarthur/Async-Rand-Server/issues"
+      },
+      "homepage" : "https://github.com/marcoarthur/Async-Rand-Server",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/marcoarthur/Async-Rand-Server.git",
+         "web" : "https://github.com/marcoarthur/Async-Rand-Server"
+      }
+   },
    "version" : "0.01",
    "x_generated_by_perl" : "v5.28.2",
    "x_serialization_backend" : "Cpanel::JSON::XS version 4.12",
