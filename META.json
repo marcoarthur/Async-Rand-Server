@@ -37,12 +37,23 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008005"
+            "Log::Log4perl" : "0",
+            "Mojo::IOLoop" : "0",
+            "Moose" : "0",
+            "Moose::Role" : "0",
+            "Regexp::Common" : "0",
+            "Type::Library" : "0",
+            "Type::Utils" : "0",
+            "Types::Standard" : "0",
+            "Types::TypeTiny" : "0",
+            "autodie" : "0",
+            "experimental" : "0",
+            "perl" : "5.014"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.96"
+            "Test::More" : "0"
          }
       }
    },
@@ -58,7 +69,7 @@
          "web" : "https://github.com/marcoarthur/Async-Rand-Server"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_generated_by_perl" : "v5.28.2",
    "x_serialization_backend" : "Cpanel::JSON::XS version 4.12",
    "x_static_install" : 1
