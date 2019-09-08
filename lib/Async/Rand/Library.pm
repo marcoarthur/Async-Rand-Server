@@ -3,7 +3,7 @@ package Async::Rand::Library;
 use 5.014;
 use Type::Library
   -base,
-  -declare => qw( IP );
+  -declare => qw( IP Port );
 use Type::Utils -all;
 use Types::TypeTiny -all;
 use Regexp::Common qw(net);
