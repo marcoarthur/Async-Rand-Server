@@ -13,11 +13,12 @@ declare "IP", as Str,
   where { m/$RE{net}{IPv4}/ },
   message => {"$_ is not a valid ipv4 address"};
 
-  declare "Port", as Int,
+declare "Port", as Int,
   where { $_ > 0 && $_ < 65535 }
   message => { "$_ out of range" };
 
 1;
+
 __END__
 
 =encoding utf-8

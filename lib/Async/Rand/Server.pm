@@ -5,6 +5,7 @@ use 5.014;
 use experimental qw(signatures);
 use autodie qw(:all);
 use Async::Rand::Library -all;
+use Async::Rand::Protocol;
 with qw( Async::Role::Loopable Async::Role::Logging );
 
 our $VERSION = '0.01';
@@ -28,6 +29,13 @@ has address => (
     default  => DEFAULT_ADDRESS,
 );
 
+has protocol => (
+    is       => 'ro',
+    isa      => 'Async::Rand::Protocol',
+    required => 1,
+    default  => sub { Async::Rand::Protocol->new },
+);
+
 # create the server
 sub BUILD {
     my $self = shift;
@@ -41,24 +49,45 @@ sub BUILD {
         } => sub {
             my ( $loop, $stream, $id ) = @_;
 
-            $stream->on( read => \&_reader_handler );
-			$stream->on( finish => \&_finish_handler );
+            $stream->on( read   => $self->make_handler('_reader') );
+            $stream->on( finish => $self->make_handler('_finisher') );
         }
     );
 
-	$self->info("Listening on port:" . $self->port);
+    $self->info( "Listening on port " . $self->port );
+    $self->set_signals_handler();
+}
+
+sub make_handler ( $self, $handler_name ) {
+    my $ref = $self->can($handler_name);
+
+    $self->fatal("Can't find a handler for $handler_name") unless $ref;
+
+    return sub {
+        my ( $stream, $byte ) = @_;
+        $self->$ref( $stream, $byte );
+    };
 }
 
 # TODO:  protocol to talk client
-sub _reader_handler {
-    my ( $stream, $bytes ) = @_;
-    say "I saw $bytes bytes";
-    $stream->write("Hello There! I read $bytes bytes\n");
+sub _reader ( $self, $stream, $bytes ) {
+    $self->info("Client requested $bytes");
+	$self->protocol->stream($stream);
+	$self->protocol->parse($bytes);
 }
 
 # TODO: protocol to finish/close client
-sub _finish_handler {
-	...
+sub _finisher ( $self, $stream, $bytes ) {
+    $self->info("Server shutdown");
+}
+
+sub set_signals_handler( $self ) {
+    my $stopper = sub {
+        $self->info("Stopping the server");
+        $self->stop;
+    };
+
+    $SIG{$_} = $stopper for qw(INT QUIT);
 }
 
 __PACKAGE__->meta->make_immutable;

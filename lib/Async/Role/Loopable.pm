@@ -21,6 +21,10 @@ sub start( $self ) {
     $self->loop->start unless $self->loop->is_running;
 }
 
+sub stop ( $self ) {
+	$self->loop->stop_gracefully;
+}
+
 # add timers, servers, etc...
 # FIX: There is an issue with adding a server
 # somehow we receive a bad response for the args is not correctly treated.
