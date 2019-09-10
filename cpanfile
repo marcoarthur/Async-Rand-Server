@@ -1,5 +1,6 @@
 requires 'Log::Log4perl';
 requires 'Mojo::IOLoop';
+requires 'Mojo::IOLoop::Stream';
 requires 'Moose';
 requires 'Moose::Role';
 requires 'Regexp::Common';

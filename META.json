@@ -39,6 +39,7 @@
          "requires" : {
             "Log::Log4perl" : "0",
             "Mojo::IOLoop" : "0",
+            "Mojo::IOLoop::Stream" : "0",
             "Moose" : "0",
             "Moose::Role" : "0",
             "Regexp::Common" : "0",

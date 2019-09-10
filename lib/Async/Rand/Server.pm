@@ -39,6 +39,7 @@ has protocol => (
 # create the server
 sub BUILD {
     my $self = shift;
+    $self->logger->level(LOG_LEVEL);
 
     $self->info("Creating a server, pid: $$");
 
@@ -69,14 +70,12 @@ sub make_handler ( $self, $handler_name ) {
     };
 }
 
-# TODO:  protocol to talk client
 sub _reader ( $self, $stream, $bytes ) {
-    $self->info("Client requested $bytes");
-	$self->protocol->stream($stream);
-	$self->protocol->parse($bytes);
+    $self->info("Client cmd $bytes");
+    $self->protocol->stream($stream);
+    $self->protocol->parse($bytes);
 }
 
-# TODO: protocol to finish/close client
 sub _finisher ( $self, $stream, $bytes ) {
     $self->info("Server shutdown");
 }
