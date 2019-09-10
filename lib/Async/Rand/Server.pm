@@ -71,7 +71,7 @@ sub make_handler ( $self, $handler_name ) {
 }
 
 sub _reader ( $self, $stream, $bytes ) {
-    $self->info("Client cmd $bytes");
+    $self->info("Client send cmd $bytes");
     $self->protocol->stream($stream);
     $self->protocol->parse($bytes);
 }
