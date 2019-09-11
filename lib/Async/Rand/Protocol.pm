@@ -14,11 +14,12 @@ has stream => (
 
 sub generate( $self ) {
     $self->stream->write( rand . "\n" );
+    $self->stream->close_gracefully;
 }
 
 sub quit ( $self ) {
     $self->stream->write("Bye bye\n");
-    $self->stream->close();
+    $self->stream->close_gracefully();
 }
 
 sub error ( $self, $cmd ) {
