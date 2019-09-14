@@ -1,6 +1,6 @@
 # NAME
 
-Async::Rand::Server - Blah blah blah
+Async::Rand::Server - This simple get you back a random number
 
 # SYNOPSIS
 
@@ -8,7 +8,7 @@ Async::Rand::Server - Blah blah blah
 
 # DESCRIPTION
 
-Async::Rand::Server is
+Async::Rand::Server is just for the fun of creating a stupid non blocking server
 
 # AUTHOR
 

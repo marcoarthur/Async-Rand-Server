@@ -4,16 +4,21 @@ use 5.014;
 use Moose::Role;
 use experimental qw(signatures);
 use Log::Log4perl qw(:easy);
+use Data::Dumper;
 our $VERSION = '0.01';
-
 
 has logger => (
     is      => 'ro',
     isa     => 'Log::Log4perl::Logger',
-    default => sub { 
-		Log::Log4perl->easy_init($DEBUG);
-		Log::Log4perl->get_logger();
-	},
+    default => sub {
+        Log::Log4perl->easy_init(
+            {
+                level  => $DEBUG,
+                layout => '%d %-5p %m%n',
+            }
+        );
+        Log::Log4perl->get_logger();
+    },
     handles => {
         debug => 'debug',
         warn  => 'warn',
@@ -22,6 +27,13 @@ has logger => (
         fatal => 'fatal',
     }
 );
+
+sub dump ( $self, @args ) {
+
+    foreach my $arg (@args) {
+        $self->debug( sprintf "%s", Dumper($arg) );
+    }
+}
 
 1;
 

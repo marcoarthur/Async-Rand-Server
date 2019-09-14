@@ -7,6 +7,7 @@ our $VERSION = '0.01';
 use Moose::Role;
 use Mojo::IOLoop;
 use experimental qw(signatures);
+use Data::Dumper;
 use Carp;
 
 has loop => (
@@ -20,12 +21,23 @@ sub start( $self ) {
     $self->loop->start unless $self->loop->is_running;
 }
 
+sub stop ( $self ) {
+	$self->loop->stop_gracefully;
+}
+
+# add timers, servers, etc...
+# FIX: There is an issue with adding a server
+# somehow we receive a bad response for the args is not correctly treated.
 sub add ( $self, $subscriber ) {
     my ( $type, $args ) = @$subscriber{qw( type args )};
-
     croak "Need type and arguments" unless $type && $args;
 
-    $self->loop->$type( %{$args} );
+	$self->debug( sprintf "Adding %s with args %s", $type, Dumper($args) );
+
+	my $ref = eval { $self->loop->can($type) };
+	croak "Not supported" unless $ref;
+
+    $self->loop->$ref( %{ $args } );
 }
 
 1;
