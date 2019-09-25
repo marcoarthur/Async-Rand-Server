@@ -5,7 +5,7 @@ use Moose::Role;
 use experimental qw(signatures);
 use Log::Log4perl qw(:easy);
 use Data::Dumper;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has logger => (
     is      => 'ro',

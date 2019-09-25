@@ -8,7 +8,7 @@ use Async::Rand::Library -all;
 use Async::Rand::Protocol;
 with qw( Async::Role::Loopable Async::Role::Logging );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 use constant {
     DEFAULT_PORT    => 3500,
     LOG_LEVEL       => 'DEBUG',

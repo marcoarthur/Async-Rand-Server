@@ -2,7 +2,7 @@ package Async::Role::Loopable;
 
 use strict;
 use 5.014;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Moose::Role;
 use Mojo::IOLoop;
