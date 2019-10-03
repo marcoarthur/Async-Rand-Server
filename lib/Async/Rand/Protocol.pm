@@ -4,7 +4,7 @@ use Moose;
 use 5.014;
 use experimental qw(signatures switch);
 use Mojo::IOLoop::Stream;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our @CMDS    = qw( QUIT GET );
 
 has stream => (
