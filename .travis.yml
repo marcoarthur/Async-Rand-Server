@@ -17,3 +17,5 @@ before_script:
   - coverage-setup
 script:
   - prove -lv
+after_success:
+    - coverage-report
