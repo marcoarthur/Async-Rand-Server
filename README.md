@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/marcoarthur/Async-Rand-Server.svg?branch=master)](https://travis-ci.org/marcoarthur/Async-Rand-Server)
+[![Coverage Status](https://coveralls.io/repos/marcoarthur/Async-Rand-Server/badge.svg?branch=master)](https://coveralls.io/r/marcoarthur/Async-Rand-Server?branch=master)
+
 # NAME
 
 Async::Rand::Server - This simple get you back a random number
